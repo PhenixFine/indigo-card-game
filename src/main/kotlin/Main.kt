@@ -1,9 +1,28 @@
 fun main() {
-    val ranks = "A 2 3 4 5 6 7 8 9 10 J Q K"
-    val suits = "♦ ♥ ♠ ♣"
-    val deck = suits.split(" ").flatMap { suit -> ranks.split(" ").map { rank -> rank + suit } }
+    val deck = Deck()
+    var exit = false
 
-    println(ranks)
-    println(suits)
-    println(deck.joinToString(" "))
+    while (!exit) {
+        when (getString("Choose an action (reset, shuffle, get, exit):")) {
+            "reset" -> deck.reset()
+            "shuffle" -> deck.shuffle()
+            "get" -> println(getCards(deck))
+            "exit" -> exit = true
+            else -> println("Wrong action.")
+        }
+    }
+    println("Bye")
+}
+
+private fun getCards(deck: Deck): String {
+    val invalid = "Invalid number of cards."
+    val insufficient = "The remaining cards are insufficient to meet the request."
+    val number = getString("Number of cards:").toIntOrNull() ?: return invalid
+
+    return if (number !in Deck.RANGE) invalid else deck.get(number)?.joinToString(" ") ?: insufficient
+}
+
+private fun getString(message: String): String {
+    println(message)
+    return readln()
 }
