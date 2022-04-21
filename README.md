@@ -1,239 +1,123 @@
 # Indigo Card Game
-Stage 3 of 5 for JetBrains Academy - Kotlin - [Indigo Card Game project](https://hyperskill.org/projects/214/stages/1074/implement).   
-This stage has us start the basics of the game, where the player and computer piles the cards onto the table.
+Stage 4 of 5 for JetBrains Academy - Kotlin - [Indigo Card Game project](https://hyperskill.org/projects/214/stages/1075/implement).   
+This stage has us implement rules and track scores and cards won.
 ## Requirements
 ### Description
-We have a virtual card deck, and now, it is time to build the game's basic core and loop.
+We will implement the game rules in this stage. The game loop is ready, but the program can't do anything; the cards are just piling up on the table.
 
-In the beginning, there are four cards on the table. The players get six cards and take turns in throwing one card at a time. One of the players is the computer. When they both have no cards in hand, deal another six cards to the players. This continues until there are no more cards in the deck. If you do the calculations, they will give you four deals (4 cards + 4 deals * 2 * 6 cards = 52 cards).
+The game rules are easy:    
+1. Four cards are placed face-up on the table;
+2. Six cards are dealt to each player;
+3. The players take turns in playing cards. If the card has the same suit or rank as the topmost card, then the player wins all the cards on the table;
+4. When both players have no cards in hand, go to step 2 unless there are no more remaining cards in the card deck.
+5. **The remaining cards on the table go to the player who won the cards last.** In the rare case where none of the players win any cards, then all cards go to the player who played first.
 
-In the current stage, just pile up the cards on the table. We will implement a win condition in the next stage.
+When a card with the same suit or rank as the top card on the table is played, the one who tossed it wins all the cards on the table. The program in this situation should save the cards for the winner before clearing the table of all cards. The program should be **keeping track** of all cards won by the two players.
 
-For each turn, print the information of the number of cards on the table and the top card. When it is the computer's turn, always put the first card in hand. The computer AI will get better in the final stage.
-
-Users should have the option to exit the program at any time.
+The program should also **count the points** of each player, so develop a point system. The cards with the ranks `A`, `10`, `J`, `Q`, `K` get 1 point each, while the player who has the most cards gets three points. If the players have the same number of cards, then the player who played first gets these points. The total points in this game are 23. The player with the most points wins the game.
 ### Objectives
-Print the project title: `Indigo Card Game`.
-
-Ask whether users want to play first by prompting the `Play first?` statement. The only available input options should be `yes` or `no` (case-insensitive). For any other input, print the question again (Example 3). If `yes`, then the player plays first (Example 1), and if `no`, then the computer plays first (Example 2).
-
-Print the first 4 cards from the deck with the message: `Initial cards on the table: J♣ Q♣ 9♦ 5♦` (the cards here are random). Divide the cards with a single space. The last card on the right is the top card on the table.
-
-After that, the player and computer take turns in putting cards on the table. If it is the player's turn, print the message `4 cards on the table, and the top card is 5♦`, where the first number is the number of cards on the table, and the card is the top card. Then print the cards in the player's hand with a prompt to choose one of them, as follows:    
+If the player throws a card that has the same suit or rank as the top card on the table, print the score and the cards won by each player with the message:
 ```text
-Cards in hand: 1)9♥ 2)4♠ 3)A♣ 4)9♣ 5)4♥ 6)3♥
-Choose a card to play (1-6):
+Player wins cards
+Score: Player 2 - Computer 0
+Cards: Player 5 - Computer 0
 ```
-Divide the cards with a single space. The player should enter a number within the range of `1` to `<Number of cards in hand>`. If the input contains something else, prompt `Choose a card to play (1-6):` once again (Example 4).
+The second line shows the total points. The third line shows the number of cards for each player (here, the numbers are random).
 
-If it is the computer's turn, print the message `5 cards on the table, and the top card is X` (a random card), where the first number is the number of cards on the table, and the card is the top card. Then, the computer should play the first card in hand. Print the message `Computer plays X` (a random card).
+If the computer throws a card that has the same suit or rank as the top card on the table, print the score and the cards won by each player with the message:
+```text
+Computer wins cards
+Score: Player 2 - Computer 1
+Cards: Player 5 - Computer 5
+```
+If there are no cards on the table, print the message `No cards on the table` instead of `X cards on the table, and the top card is Y`.
 
-Once there are no more cards to play, print the message `52 cards on the table, and the top card is X` (a random card), followed by the message `Game Over`. Terminate the program.
-
-If the player inputs `exit`, when prompted for a card, print the message Game Over and terminate the program (Examples 3 and 4).
+When the game ends, **add the points of the remaining cards** and print the score and the cards won before the `Game Over` message:
+```text
+Score: Player 6 - Computer 17
+Cards: Player 12 - Computer 40
+Game Over
+```
+Since this is the final score, the sum of cards should be 52, and the sum of points should be 23.
 ### Examples
 The greater-than symbol followed by a space (`> `) represents the user input. Note that it's not part of the input.    
-Example 2 has been shortened.
+The examples have been shortened.
 #### Example 1: standard execution; player first
 ```text
 Indigo Card Game
 Play first?
 > yes
-Initial cards on the table: 5♥ 3♦ 10♠ A♣
+Initial cards on the table: 5♦ J♦ K♣ 5♠
 
-4 cards on the table, and the top card is A♣
-Cards in hand: 1)2♥ 2)7♠ 3)4♦ 4)5♣ 5)9♠ 6)A♠
+4 cards on the table, and the top card is 5♠
+Cards in hand: 1)J♠ 2)8♦ 3)2♦ 4)6♥ 5)2♣ 6)A♦
 Choose a card to play (1-6):
+> 1
+Player wins cards
+Score: Player 3 - Computer 0
+Cards: Player 5 - Computer 0
+
+No cards on the table
+Computer plays Q♠
+
+1 cards on the table, and the top card is Q♠
+Cards in hand: 1)8♦ 2)2♦ 3)6♥ 4)2♣ 5)A♦
+Choose a card to play (1-5):
 > 2
 
-5 cards on the table, and the top card is 7♠
-Computer plays A♦
+2 cards on the table, and the top card is 2♦
+Computer plays 7♠
 
-6 cards on the table, and the top card is A♦
-Cards in hand: 1)2♥ 2)4♦ 3)5♣ 4)9♠ 5)A♠
-Choose a card to play (1-5):
-> 4
-
-7 cards on the table, and the top card is 9♠
-Computer plays 4♣
-
-8 cards on the table, and the top card is 4♣
-Cards in hand: 1)2♥ 2)4♦ 3)5♣ 4)A♠
+3 cards on the table, and the top card is 7♠
+Cards in hand: 1)8♦ 2)6♥ 3)2♣ 4)A♦
 Choose a card to play (1-4):
-> 4
-
-9 cards on the table, and the top card is A♠
-Computer plays 9♦
-
-10 cards on the table, and the top card is 9♦
-Cards in hand: 1)2♥ 2)4♦ 3)5♣
-Choose a card to play (1-3):
-> 1
-
-11 cards on the table, and the top card is 2♥
-Computer plays 10♣
-
-12 cards on the table, and the top card is 10♣
-Cards in hand: 1)4♦ 2)5♣
-Choose a card to play (1-2):
-> 2
-
-13 cards on the table, and the top card is 5♣
-Computer plays 7♥
-
-14 cards on the table, and the top card is 7♥
-Cards in hand: 1)4♦
-Choose a card to play (1-1):
-> 1
-
-15 cards on the table, and the top card is 4♦
-Computer plays 8♥
-
-16 cards on the table, and the top card is 8♥
-Cards in hand: 1)K♣ 2)3♣ 3)2♣ 4)K♥ 5)7♣ 6)6♣
-Choose a card to play (1-6):
-> 2
-
-17 cards on the table, and the top card is 3♣
-Computer plays 10♥
-
-18 cards on the table, and the top card is 10♥
-Cards in hand: 1)K♣ 2)2♣ 3)K♥ 4)7♣ 5)6♣
-Choose a card to play (1-5):
 > 3
 
-19 cards on the table, and the top card is K♥
-Computer plays 4♥
+4 cards on the table, and the top card is 2♣
+Computer plays 5♣
+Computer wins cards
+Score: Player 3 - Computer 1
+Cards: Player 5 - Computer 5
 
-20 cards on the table, and the top card is 4♥
-Cards in hand: 1)K♣ 2)2♣ 3)7♣ 4)6♣
-Choose a card to play (1-4):
-> 1
-
-21 cards on the table, and the top card is K♣
-Computer plays 4♠
-
-22 cards on the table, and the top card is 4♠
-Cards in hand: 1)2♣ 2)7♣ 3)6♣
+No cards on the table
+Cards in hand: 1)8♦ 2)6♥ 3)A♦
 Choose a card to play (1-3):
 > 1
 
-23 cards on the table, and the top card is 2♣
-Computer plays Q♦
+1 cards on the table, and the top card is 8♦
+Computer plays 4♦
+Computer wins cards
+Score: Player 3 - Computer 1
+Cards: Player 5 - Computer 7
 
-24 cards on the table, and the top card is Q♦
-Cards in hand: 1)7♣ 2)6♣
-Choose a card to play (1-2):
-> 1
 
-25 cards on the table, and the top card is 7♣
-Computer plays 6♥
+...................................
+...................................
+...................................
 
-26 cards on the table, and the top card is 6♥
-Cards in hand: 1)6♣
-Choose a card to play (1-1):
-> 1
 
-27 cards on the table, and the top card is 6♣
-Computer plays A♥
-
-28 cards on the table, and the top card is A♥
-Cards in hand: 1)3♠ 2)10♦ 3)K♦ 4)5♦ 5)K♠ 6)Q♥
-Choose a card to play (1-6):
-> 1
-
-29 cards on the table, and the top card is 3♠
-Computer plays 8♦
-
-30 cards on the table, and the top card is 8♦
-Cards in hand: 1)10♦ 2)K♦ 3)5♦ 4)K♠ 5)Q♥
-Choose a card to play (1-5):
-> 1
-
-31 cards on the table, and the top card is 10♦
-Computer plays J♠
-
-32 cards on the table, and the top card is J♠
-Cards in hand: 1)K♦ 2)5♦ 3)K♠ 4)Q♥
-Choose a card to play (1-4):
-> 1
-
-33 cards on the table, and the top card is K♦
-Computer plays 8♣
-
-34 cards on the table, and the top card is 8♣
-Cards in hand: 1)5♦ 2)K♠ 3)Q♥
-Choose a card to play (1-3):
-> 1
-
-35 cards on the table, and the top card is 5♦
-Computer plays 5♠
-
-36 cards on the table, and the top card is 5♠
-Cards in hand: 1)K♠ 2)Q♥
+1 cards on the table, and the top card is K♥
+Cards in hand: 1)3♥ 2)2♥
 Choose a card to play (1-2):
 > 2
+Player wins cards
+Score: Player 12 - Computer 8
+Cards: Player 26 - Computer 23
 
-37 cards on the table, and the top card is Q♥
-Computer plays 2♠
+No cards on the table
+Computer plays 9♠
 
-38 cards on the table, and the top card is 2♠
-Cards in hand: 1)K♠
+1 cards on the table, and the top card is 9♠
+Cards in hand: 1)3♥
 Choose a card to play (1-1):
 > 1
 
-39 cards on the table, and the top card is K♠
-Computer plays Q♣
+2 cards on the table, and the top card is 3♥
+Computer plays 6♣
 
-40 cards on the table, and the top card is Q♣
-Cards in hand: 1)6♦ 2)J♣ 3)7♦ 4)Q♠ 5)9♥ 6)3♥
-Choose a card to play (1-6):
-> 6
-
-41 cards on the table, and the top card is 3♥
-Computer plays 6♠
-
-42 cards on the table, and the top card is 6♠
-Cards in hand: 1)6♦ 2)J♣ 3)7♦ 4)Q♠ 5)9♥
-Choose a card to play (1-5):
-> 5
-
-43 cards on the table, and the top card is 9♥
-Computer plays 9♣
-
-44 cards on the table, and the top card is 9♣
-Cards in hand: 1)6♦ 2)J♣ 3)7♦ 4)Q♠
-Choose a card to play (1-4):
-> 4
-
-45 cards on the table, and the top card is Q♠
-Computer plays J♦
-
-46 cards on the table, and the top card is J♦
-Cards in hand: 1)6♦ 2)J♣ 3)7♦
-Choose a card to play (1-3):
-> 3
-
-47 cards on the table, and the top card is 7♦
-Computer plays 8♠
-
-48 cards on the table, and the top card is 8♠
-Cards in hand: 1)6♦ 2)J♣
-Choose a card to play (1-2):
-> 2
-
-49 cards on the table, and the top card is J♣
-Computer plays J♥
-
-50 cards on the table, and the top card is J♥
-Cards in hand: 1)6♦
-Choose a card to play (1-1):
-> 1
-
-51 cards on the table, and the top card is 6♦
-Computer plays 2♦
-
-52 cards on the table, and the top card is 2♦
+3 cards on the table, and the top card is 6♣
+Score: Player 15 - Computer 8
+Cards: Player 29 - Computer 23
 Game Over
 ```
 #### Example 2: standard execution; computer first
@@ -241,94 +125,84 @@ Game Over
 Indigo Card Game
 Play first?
 > no
-Initial cards on the table: J♥ A♠ 8♥ 10♣
+Initial cards on the table: A♠ 10♠ 2♣ J♦
 
-4 cards on the table, and the top card is 10♣
-Computer plays 4♥
+4 cards on the table, and the top card is J♦
+Computer plays 2♦
+Computer wins cards
+Score: Player 0 - Computer 3
+Cards: Player 0 - Computer 5
 
-5 cards on the table, and the top card is 4♥
-Cards in hand: 1)9♠ 2)4♣ 3)7♥ 4)4♦ 5)5♥ 6)K♥
+No cards on the table
+Cards in hand: 1)9♥ 2)J♠ 3)9♦ 4)7♦ 5)10♣ 6)5♠
 Choose a card to play (1-6):
-> 6
+> 1
 
-6 cards on the table, and the top card is K♥
-Computer plays J♦
+1 cards on the table, and the top card is 9♥
+Computer plays 3♣
 
+2 cards on the table, and the top card is 3♣
+Cards in hand: 1)J♠ 2)9♦ 3)7♦ 4)10♣ 5)5♠
+Choose a card to play (1-5):
+> 5
 
-....................................
-....................................
-....................................
+3 cards on the table, and the top card is 5♠
+Computer plays Q♦
 
+4 cards on the table, and the top card is Q♦
+Cards in hand: 1)J♠ 2)9♦ 3)7♦ 4)10♣
+Choose a card to play (1-4):
+> 2
+Player wins cards
+Score: Player 1 - Computer 3
+Cards: Player 5 - Computer 5
 
-47 cards on the table, and the top card is Q♣
-Cards in hand: 1)5♠ 2)5♦ 3)6♦
+No cards on the table
+Computer plays 4♣
+
+1 cards on the table, and the top card is 4♣
+Cards in hand: 1)J♠ 2)7♦ 3)10♣
 Choose a card to play (1-3):
 > 1
 
-48 cards on the table, and the top card is 5♠
-Computer plays 2♥
+2 cards on the table, and the top card is J♠
+Computer plays 7♣
 
-49 cards on the table, and the top card is 2♥
-Cards in hand: 1)5♦ 2)6♦
+3 cards on the table, and the top card is 7♣
+Cards in hand: 1)7♦ 2)10♣
+Choose a card to play (1-2):
+> 1
+Player wins cards
+Score: Player 2 - Computer 3
+Cards: Player 9 - Computer 5
+
+No cards on the table
+Computer plays 5♦
+
+
+...................................
+...................................
+...................................
+
+
+3 cards on the table, and the top card is 3♥
+Computer plays 9♣
+
+4 cards on the table, and the top card is 9♣
+Cards in hand: 1)7♠ 2)K♦
 Choose a card to play (1-2):
 > 2
 
-50 cards on the table, and the top card is 6♦
-Computer plays 8♣
+5 cards on the table, and the top card is K♦
+Computer plays J♥
 
-51 cards on the table, and the top card is 8♣
-Cards in hand: 1)5♦
+6 cards on the table, and the top card is J♥
+Cards in hand: 1)7♠
 Choose a card to play (1-1):
 > 1
 
-52 cards on the table, and the top card is 5♦
-Game Over
-```
-#### Example 3: play first? wrong input; exit
-```text
-CIndigo Card Game
-Play first?
-> OK
-Play first?
-> sure
-Play first?
-> Noway
-Play first?
-> 0
-Play first?
-> yes
-Initial cards on the table: J♥ 3♠ 8♠ Q♥
-
-4 cards on the table, and the top card is Q♥
-Cards in hand: 1)6♥ 2)9♥ 3)8♣ 4)6♦ 5)Q♦ 6)3♦
-Choose a card to play (1-6):
-> exit
-Game Over
-```
-#### Example 4: wrong card to play; exit
-```text
-Indigo Card Game
-Play first?
-> yes
-Initial cards on the table: 4♦ 10♠ 9♣ 7♦
-
-4 cards on the table, and the top card is 7♦
-Cards in hand: 1)Q♦ 2)6♥ 3)4♥ 4)4♠ 5)Q♠ 6)3♦
-Choose a card to play (1-6):
-> 0
-Choose a card to play (1-6):
-> 7
-Choose a card to play (1-6):
-> one
-Choose a card to play (1-6):
-> 5
-
-5 cards on the table, and the top card is Q♠
-Computer plays K♠
-
-6 cards on the table, and the top card is K♠
-Cards in hand: 1)Q♦ 2)6♥ 3)4♥ 4)4♠ 5)3♦
-Choose a card to play (1-5):
-> exit
+7 cards on the table, and the top card is 7♠
+Score: Player 17 - Computer 6
+Cards: Player 35 - Computer 17
 Game Over
 ```

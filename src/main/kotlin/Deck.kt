@@ -12,7 +12,5 @@ class Deck {
 
     fun getCards(num: Int) = if (deck.size >= num) (1..num).map { deck.removeLast() } else emptyList()
 
-    companion object {
-        val RANGE = 1..52
-    }
+    fun isEmpty() = deck.isEmpty()
 }
