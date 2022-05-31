@@ -22,9 +22,9 @@ class Player(val hand: Hand, private val name: String = "Computer") {
             cardsWinner.score += table.sumPoints()
             cardsWinner.cards += table.size()
         }
-        if (cards > computer.cards || (cards == computer.cards && playerWentFirst)) score += 3 else {
-            computer.score += 3
-        }
+        val playerGetsPoints = cards > computer.cards || (cards == computer.cards && playerWentFirst)
+
+        if (playerGetsPoints) score += 3 else computer.score += 3
         printScore(computer)
     }
 

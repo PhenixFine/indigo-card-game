@@ -31,8 +31,9 @@ private fun getPlayerTurn(): Boolean {
 }
 
 private fun printCardsOnTable(table: Hand) {
-    if (table.isEmpty()) println("\nNo cards on the table") else {
-        println("\n" + table.size() + " cards on the table, and the top card is " + table.topCard())
+    when {
+        table.isEmpty() -> println("\nNo cards on the table")
+        else -> println("\n" + table.size() + " cards on the table, and the top card is " + table.topCard())
     }
 }
 
@@ -58,20 +59,18 @@ private fun playerTurn(player: Player, computer: Player, table: Hand): Boolean {
 }
 
 private fun computerTurn(computer: Player, player: Player, table: Hand) {
-    val card = computer.hand.takeLast() ?: return
+    val card: String by lazy { computer.hand.bestMove(table.topCard()) }
 
+    println(computer.hand.cards())
     println("Computer plays $card")
     if (isWin(computer, card, table)) player.printScore(computer)
 }
 
 private fun isWin(player: Player, card: String, table: Hand): Boolean {
-    val won = table.isWin(card)
-
-    table.add(card)
-    return if (won) {
-        player.win(table)
-        true
-    } else false
+    return table.isWin(card).also { isWin ->
+        table.add(card)
+        if (isWin) player.win(table)
+    }
 }
 
 private fun getString(message: String): String {
